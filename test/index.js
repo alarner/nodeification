@@ -34,4 +34,28 @@ describe('nodeification', function() {
 			expect(function() { nodeification(options); }).to.throw(/A viewPath property must be passed with your options\./);
 		});
 	});
+	describe('functionality', function() {
+		let options = {
+			knex: {
+				client: 'sqlite3',
+				connection: {
+					filename: './test.db'
+				}
+			},
+			viewPath: 'view/notification'
+		};
+		let n = nodeification(options);
+		it('should have addSubscriber method', function() {
+			expect(n.addSubscriber).not.to.be.undefined;
+		});
+		it('should have subscribe method', function() {
+			expect(n.subscribe).not.to.be.undefined;
+		});
+		it('should have unsubscribe method', function() {
+			expect(n.unsubscribe).not.to.be.undefined;
+		});
+		it('should have send method', function() {
+			expect(n.send).not.to.be.undefined;
+		});
+	});
 });

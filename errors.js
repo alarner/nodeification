@@ -23,6 +23,14 @@ module.exports = {
 		message: 'addSubscriber subscriptions argument must be an array of strings.',
 		status: 400
 	},
+	GETSUBSCRIBERID_INVALID_FN_ARG: {
+		message: 'A function must be passed as the first argument to getSubscriberId.',
+		status: 400
+	},
+	GETSUBSCRIBERID_INVALID_ARGS: {
+		message: 'Invalid type/key or subscriberId.',
+		status: 400
+	},
 	DUPLICATE_SUBSCRIBER: {
 		message: 'A subscriber with type "{{ type }}" and key "{{ key }}" already exists.',
 		status: 409
