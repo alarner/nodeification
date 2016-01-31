@@ -1,17 +1,19 @@
 let Howhap = require('howhap');
 let knex = require('knex');
 let _ = require('lodash');
+let Route = require('url-pattern');
 /*
  * options
  * {
  *		routes: {...},
  * 		knex: {...},
- * 		viewPath: {...}
+ * 		viewPath: {...},
+ *		errors: {...}
  * }
  */
 module.exports = function(options) {
 	let defaults = {
-		routes: {},
+		routes: [],
 		knex: null,
 		viewPath: '',
 		errors: require('./errors')
@@ -33,11 +35,20 @@ module.exports = function(options) {
 	}
 	options.bookshelf = require('bookshelf')(options.knex);
 	options.bookshelf.plugin('registry');
+
+	options.parsedRoutes = [];
+	options.routes.forEach(route => {
+		options.parsedRoutes.push({
+			route: new Route(route.pattern),
+			handler: route.handler
+		});
+	});
+
 	let getSubscriberId = require('./lib/getSubscriberId')(options);
 	return {
 		addSubscriber: require('./lib/addSubscriber')(options),
 		subscribe: getSubscriberId(require('./lib/subscribe')(options)),
-		unsubscribe: null,
-		send: null
+		unsubscribe: getSubscriberId(require('./lib/unsubscribe')(options)),
+		send: require('./lib/send')(options)
 	};
 };
