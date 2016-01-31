@@ -8,7 +8,13 @@ let Route = require('url-pattern');
  *		routes: {...},
  * 		knex: {...},
  * 		viewPath: {...},
- *		errors: {...}
+ *		errors: {...},
+ *		adapters: {
+ * 			email: {...}	
+ * 		},
+ * 		concurrency: 300,
+ *		batchSize: 300,
+ *		hasUsers: false
  * }
  */
 module.exports = function(options) {
@@ -16,7 +22,10 @@ module.exports = function(options) {
 		routes: [],
 		knex: null,
 		viewPath: '',
-		errors: require('./errors')
+		errors: require('./errors'),
+		concurrency: 300,
+		batchSize: 300,
+		adapters: {}
 	};
 	options = options || {};
 	options = _.extend(defaults, options);
@@ -49,6 +58,12 @@ module.exports = function(options) {
 		addSubscriber: require('./lib/addSubscriber')(options),
 		subscribe: getSubscriberId(require('./lib/subscribe')(options)),
 		unsubscribe: getSubscriberId(require('./lib/unsubscribe')(options)),
-		send: require('./lib/send')(options)
+		send: require('./lib/send')(options),
+		Notification: require('./lib/models/Notification')(options.bookshelf),
+		Subscriber: require('./lib/models/Subscriber')(options.bookshelf),
+		Subscription: require('./lib/models/Subscription')(options.bookshelf),
+		Unsubscription: require('./lib/models/Unsubscription')(options.bookshelf),
+		Subscribers: require('./lib/collections/Subscribers')(options.bookshelf),
+		Subscriptions: require('./lib/collections/Subscriptions')(options.bookshelf)
 	};
 };

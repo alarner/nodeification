@@ -65,5 +65,23 @@ describe('nodeification', function() {
 		it('should have send method', function() {
 			expect(n.send).not.to.be.undefined;
 		});
+		it('should have Notification model', function() {
+			expect(n.Notification).not.to.be.undefined;
+		});
+		it('should have Subscriber model', function() {
+			expect(n.Subscriber).not.to.be.undefined;
+		});
+		it('should have Subscription model', function() {
+			expect(n.Subscription).not.to.be.undefined;
+		});
+		it('should have Unsubscription model', function() {
+			expect(n.Unsubscription).not.to.be.undefined;
+		});
+		it('should have Subscribers model', function() {
+			expect(n.Subscribers).not.to.be.undefined;
+		});
+		it('should have Subscriptions model', function() {
+			expect(n.Subscription).not.to.be.undefined;
+		});
 	});
 });
