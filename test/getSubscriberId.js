@@ -3,6 +3,7 @@ let errors = require('../errors');
 let gsi = require('../lib/getSubscriberId');
 let getSubscriberId = null;
 let Subscriber = null;
+let _ = require('lodash');
 describe('getSubscriberId', function() {
 	before(function() {
 		let bookshelf = require('bookshelf')(global.knex);
@@ -12,8 +13,8 @@ describe('getSubscriberId', function() {
 			bookshelf: bookshelf
 		});
 		Subscriber = require('../lib/models/Subscriber')(bookshelf);
-	
-		return global.knex.truncate('subscribers').then(() => {
+
+		return global.knex('subscribers').del().then(() => {
 			return Subscriber.forge({
 				type: 'email',
 				key: 'anlarner@gmail.com',
@@ -64,7 +65,8 @@ describe('getSubscriberId', function() {
 		it('should return the subsriber id if the subsriber exists', function(done) {
 			let args = ['email', 'anlarner@gmail.com', 'b', 'c'];
 			getSubscriberId(function() {
-				expect(Array.prototype.slice.call(arguments, 0)).to.deep.equal([1, 'b', 'c']);
+				expect(Array.prototype.slice.call(arguments, 1)).to.deep.equal(['b', 'c']);
+				expect(_.isInteger(arguments[0])).to.be.true;
 				done();
 			})
 			.apply(null, args);

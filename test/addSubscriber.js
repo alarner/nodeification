@@ -1,17 +1,24 @@
 let expect = require('chai').expect;
 describe('addSubscriber', function() {
 	let errors = require('../errors');
-	
 
-	beforeEach(function() {
+	beforeEach(function(done) {
 		let truncate = ['subscribers', 'subscriptions'];
-		return Promise.all(truncate.map(table => {
-			return global.knex.truncate(table);
-		}));
+		global.knex('subscribers').del()
+		.then(() => {
+			return global.knex('subscriptions').del();
+		})
+		.then(() => {
+			return global.knex('subscribers').select('*');
+		})
+		.then((subscribers) => {
+			done();
+		});
 	});
 
 	describe('params', function() {
-		it('should throw an error if no type is passed in', function() {
+
+		it('should throw an error if no type is passed in', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -19,9 +26,13 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber(); }).to.throw(/A \(string\) type must be passed as the first argument to addSubscriber\./);
+			addSubscriber()
+			.catch(err => {
+				expect(err.toString()).to.equal('A (string) type must be passed as the first argument to addSubscriber.');
+				done();
+			});
 		});
-		it('should throw an error if no key is passed in', function() {
+		it('should throw an error if no key is passed in', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -29,9 +40,13 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email'); }).to.throw(/A \(string\) key must be passed as the second argument to addSubscriber\./);
+			addSubscriber('email')
+			.catch(err => {
+				expect(err.toString()).to.equal('A (string) key must be passed as the second argument to addSubscriber.');
+				done();
+			});
 		});
-		it('should throw an error if a non-array subscriptions argument is passed in', function() {
+		it('should throw an error if a non-array subscriptions argument is passed in', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -39,9 +54,13 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', null, 'foo'); }).to.throw(/addSubscriber subscriptions argument must be an array of strings./);
+			addSubscriber('email', 'test@test.com', null, 'foo')
+			.catch(err => {
+				expect(err.toString()).to.equal('addSubscriber subscriptions argument must be an array of strings.');
+				done();
+			});
 		});
-		it('should throw an error if an array of non-strings subscriptions argument is passed in', function() {
+		it('should throw an error if an array of non-strings subscriptions argument is passed in', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -49,10 +68,17 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', null, [1, 2, 3]); }).to.throw(/addSubscriber subscriptions argument must be an array of strings./);
-			expect(function() { addSubscriber('email', 'test@test.com', null, ['1', '2', 3]); }).to.throw(/addSubscriber subscriptions argument must be an array of strings./);
+			addSubscriber('email', 'test@test.com', null, [1, 2, 3])
+			.catch(err => {
+				expect(err.toString()).to.equal('addSubscriber subscriptions argument must be an array of strings.');
+				addSubscriber('email', 'test@test.com', null, ['1', '2', 3])
+				.catch(err => {
+					expect(err.toString()).to.equal('addSubscriber subscriptions argument must be an array of strings.');
+					done();
+				});
+			});
 		});
-		it('should work if arguments are valid 1', function() {
+		it('should work if arguments are valid 1', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -60,9 +86,14 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com'); }).not.to.throw();
+			addSubscriber('email', 'test@test.com')
+			.then(s => {
+				expect(s.get('type')).to.equal('email');
+				expect(s.get('key')).to.equal('test@test.com');
+				done();
+			});
 		});
-		it('should work if arguments are valid 2', function() {
+		it('should work if arguments are valid 2', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -70,9 +101,15 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', 15); }).not.to.throw();
+			addSubscriber('email', 'test@test.com', 15)
+			.then(s => {
+				expect(s.get('type')).to.equal('email');
+				expect(s.get('key')).to.equal('test@test.com');
+				expect(s.get('userId')).to.equal(15);
+				done();
+			});
 		});
-		it('should work if arguments are valid 3', function() {
+		it('should work if arguments are valid 3', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -80,9 +117,15 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', 15, null); }).not.to.throw();
+			addSubscriber('email', 'test@test.com', 15, null)
+			.then(s => {
+				expect(s.get('type')).to.equal('email');
+				expect(s.get('key')).to.equal('test@test.com');
+				expect(s.get('userId')).to.equal(15);
+				done();
+			});
 		});
-		it('should work if arguments are valid 4', function() {
+		it('should work if arguments are valid 4', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -90,9 +133,15 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', 15, []); }).not.to.throw();
+			addSubscriber('email', 'test@test.com', 15, [])
+			.then(s => {
+				expect(s.get('type')).to.equal('email');
+				expect(s.get('key')).to.equal('test@test.com');
+				expect(s.get('userId')).to.equal(15);
+				done();
+			});
 		});
-		it('should work if arguments are valid 5', function() {
+		it('should work if arguments are valid 5', function(done) {
 			let bookshelf = require('bookshelf')(global.knex);
 			bookshelf.plugin('registry');
 			let addSubscriber = require('../lib/addSubscriber')({
@@ -100,7 +149,13 @@ describe('addSubscriber', function() {
 				knex: global.knex,
 				bookshelf: bookshelf
 			});
-			expect(function() { addSubscriber('email', 'test@test.com', 15, ['a', 'b', 'c']); }).not.to.throw();
+			addSubscriber('email', 'test@test.com', 15, ['a', 'b', 'c'])
+			.then(s => {
+				expect(s.get('type')).to.equal('email');
+				expect(s.get('key')).to.equal('test@test.com');
+				expect(s.get('userId')).to.equal(15);
+				done();
+			});
 		});
 	});
 	describe('other', function() {
@@ -117,16 +172,15 @@ describe('addSubscriber', function() {
 			Promise.all([
 				addSubscriber('email', 'test@test.com'),
 				addSubscriber('text', '5551231234'),
-				addSubscriber('android-push', '4n9pc5q38ny5cw49'),
-				addSubscriber('ios-push', '4n9pc5q38ny5cw49')
+				addSubscriber('push-android', '4n9pc5q38ny5cw49'),
+				addSubscriber('push-ios', '4n9pc5q38ny5cw49')
 			])
 			.then(result => {
 				let s = new Subscribers();
 				s.count().then(count => {
-					expect(count).to.equal(4);
+					expect(parseInt(count)).to.equal(4);
 					done();
-				})
-				.catch(done);
+				});
 			});
 		});
 
@@ -145,8 +199,7 @@ describe('addSubscriber', function() {
 				Subscriber.forge({id: s.id}).fetch().then(s => {
 					expect(s.get('userId')).to.equal(73);
 					done();
-				})
-				.catch(done);
+				});
 			});
 		});
 
@@ -169,8 +222,25 @@ describe('addSubscriber', function() {
 					expect(descriptors.indexOf('subscription/3')).to.be.gte(0);
 					done();
 				});
+			});
+		});
+
+		it('should not allow the same user to subscribe twice', function(done) {
+			let bookshelf = require('bookshelf')(global.knex);
+			bookshelf.plugin('registry');
+			let addSubscriber = require('../lib/addSubscriber')({
+				errors: errors,
+				knex: global.knex,
+				bookshelf: bookshelf
+			});
+			addSubscriber('email', 'test@test.com')
+			.then(s => {
+				return addSubscriber('email', 'test@test.com', 7);
 			})
-			.catch(done);
+			.catch(err => {
+				expect(err.toString()).to.equal('A subscriber with type "email" and key "test@test.com" already exists.');
+				done();
+			});
 		});
 	});
 });

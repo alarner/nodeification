@@ -12,9 +12,13 @@ describe('nodeification', function() {
 		it('should work when passing in a knex db connection params', function() {
 			let options = {
 				knex: {
-					client: 'sqlite3',
+					client: 'pg',
 					connection: {
-						filename: './test.db'
+						host: '127.0.0.1',
+						user: 'alarner',
+						password: '',
+						database: 'test',
+						charset: 'utf8'
 					}
 				},
 				viewPath: 'view/notification'
@@ -37,9 +41,13 @@ describe('nodeification', function() {
 	describe('functionality', function() {
 		let options = {
 			knex: {
-				client: 'sqlite3',
+				client: 'pg',
 				connection: {
-					filename: './test.db'
+					host: '127.0.0.1',
+					user: 'alarner',
+					password: '',
+					database: 'test',
+					charset: 'utf8'
 				}
 			},
 			viewPath: 'view/notification'

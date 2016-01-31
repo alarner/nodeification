@@ -1,8 +1,12 @@
 before(function() {
 	global.knex = require('knex')({
-		client: 'sqlite3',
+		client: 'pg',
 		connection: {
-			filename: './test.db'
+			host: '127.0.0.1',
+			user: 'alarner',
+			password: '',
+			database: 'test',
+			charset: 'utf8'
 		}
 	});
 });

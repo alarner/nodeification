@@ -33,9 +33,10 @@ module.exports = function(options) {
 	}
 	options.bookshelf = require('bookshelf')(options.knex);
 	options.bookshelf.plugin('registry');
+	let getSubscriberId = require('./lib/getSubscriberId')(options);
 	return {
 		addSubscriber: require('./lib/addSubscriber')(options),
-		subscribe: null,
+		subscribe: getSubscriberId(require('./lib/subscribe')(options)),
 		unsubscribe: null,
 		send: null
 	};

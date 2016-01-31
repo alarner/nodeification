@@ -56,7 +56,7 @@ module.exports = {
 		status: 404
 	},
 	BAD_SUBSCRIPTION_DESCRIPTOR: {
-		message: '"{{ subscriberId }}" (type = {{ type }}) is not a valid subscription descriptor.',
+		message: '"{{ descriptor }}" (type = {{ type }}) is not a valid subscription descriptor.',
 		status: 400
 	},
 	MISSING_HANDLER: {

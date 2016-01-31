@@ -9,12 +9,7 @@ exports.up = function(knex, Promise) {
 			'push-ios'
 		]);
 		t.string('key').notNull();
-		t.integer('userId')
-			.unsigned()
-			.nullable()
-			.references('id')
-			.inTable('users')
-			.onDelete('CASCADE');
+		t.integer('userId').unsigned().nullable();
 		t.dateTime('createdAt').notNull();
 		t.dateTime('updatedAt').nullable();
 		t.unique(['type','key'], 'type_key');
