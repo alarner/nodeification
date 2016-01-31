@@ -60,7 +60,7 @@ module.exports = {
 		status: 400
 	},
 	MISSING_HANDLER: {
-		message: 'There is no matching handler for the pattern "{{ descriptor }}"',
+		message: 'There is no matching handler for the descriptor "{{ descriptor }}"',
 		status: 404
 	}
 };

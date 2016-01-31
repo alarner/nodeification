@@ -37,7 +37,11 @@ describe('send', function() {
 		send = s(options);
 	});
 
-	it('should work', function() {
-		expect(true).to.be.true;
+	it('should throw an error if there is no route', function(done) {
+		send('newslettersss')
+		.catch(err => {
+			expect(err.toString()).to.equal('There is no matching handler for the descriptor "newslettersss"');
+			done();
+		});
 	});
 });
