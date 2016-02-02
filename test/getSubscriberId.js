@@ -17,7 +17,7 @@ describe('getSubscriberId', function() {
 		return global.knex('subscribers').del().then(() => {
 			return Subscriber.forge({
 				type: 'email',
-				key: 'anlarner@gmail.com',
+				key: 'test@test.com',
 				userId: 3
 			}).save();
 		});
@@ -63,7 +63,7 @@ describe('getSubscriberId', function() {
 		});
 
 		it('should return the subsriber id if the subsriber exists', function(done) {
-			let args = ['email', 'anlarner@gmail.com', 'b', 'c'];
+			let args = ['email', 'test@test.com', 'b', 'c'];
 			getSubscriberId(function() {
 				expect(Array.prototype.slice.call(arguments, 1)).to.deep.equal(['b', 'c']);
 				expect(_.isInteger(arguments[0])).to.be.true;

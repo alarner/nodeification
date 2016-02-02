@@ -71,13 +71,13 @@ describe('send', function() {
 		});
 	});
 
-	it('should work', function(done) {
-		addSubscriber('email', 'anlarner@gmail.com', null, ['recover-password/1'])
-		.then(subscriber => send('recover-password/1'))
-		.then(result => {
-			console.log('done');
-			console.log(result);
-			done();
-		});
-	});
+	// it('should work', function(done) {
+	// 	addSubscriber('email', 'test@test.com', null, ['recover-password/1'])
+	// 	.then(subscriber => send('recover-password/1'))
+	// 	.then(result => {
+	// 		console.log('done');
+	// 		console.log(result);
+	// 		done();
+	// 	});
+	// });
 });

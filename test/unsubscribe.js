@@ -48,7 +48,7 @@ describe('unsubscribe', function() {
 	});
 
 	it('should unsubscribe properly when parameters are valid', function(done) {
-		addSubscriber('email', 'anlarner@gmail.com', null, ['test/foo'])
+		addSubscriber('email', 'test@test.com', null, ['test/foo'])
 		.then(subscriber => {
 			return unsubscribe(subscriber.id, 'test/foo');
 		})
