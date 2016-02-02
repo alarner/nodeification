@@ -5,6 +5,34 @@ module.exports = {
 		message: 'An unknown error occurred.',
 		status: 500
 	},
+	MISSING_KNEX_OPTION: {
+		message: 'A knex property must be passed with your options.',
+		status: 400
+	},
+	MISSING_VIEWPATH_OPTION: {
+		message: 'A viewPath property must be passed with your options.',
+		status: 400
+	},
+	ADDSUBSCRIBER_INVALID_TYPE_ARG: {
+		message: 'A (string) type must be passed as the first argument to addSubscriber.',
+		status: 400
+	},
+	ADDSUBSCRIBER_INVALID_KEY_ARG: {
+		message: 'A (string) key must be passed as the second argument to addSubscriber.',
+		status: 400
+	},
+	ADDSUBSCRIBER_INVALID_SUBSCRIPTIONS_ARG: {
+		message: 'addSubscriber subscriptions argument must be an array of strings.',
+		status: 400
+	},
+	GETSUBSCRIBERID_INVALID_FN_ARG: {
+		message: 'A function must be passed as the first argument to getSubscriberId.',
+		status: 400
+	},
+	GETSUBSCRIBERID_INVALID_ARGS: {
+		message: 'Invalid type/key or subscriberId.',
+		status: 400
+	},
 	DUPLICATE_SUBSCRIBER: {
 		message: 'A subscriber with type "{{ type }}" and key "{{ key }}" already exists.',
 		status: 409
@@ -30,11 +58,11 @@ module.exports = {
 		status: 404
 	},
 	BAD_SUBSCRIPTION_DESCRIPTOR: {
-		message: '"{{ subscriberId }}" (type = {{ type }}) is not a valid subscription descriptor.',
+		message: '"{{ descriptor }}" (type = {{ type }}) is not a valid subscription descriptor.',
 		status: 400
 	},
 	MISSING_HANDLER: {
-		message: 'There is no matching handler for the pattern "{{ descriptor }}"',
+		message: 'There is no matching handler for the descriptor "{{ descriptor }}"',
 		status: 404
 	}
 };

@@ -1,9 +1,13 @@
 'use strict';
 
-module.exports = function (knex) {
-	var bookshelf = require('bookshelf')(knex);
-	return bookshelf.model('Subscriber', {
+var model = null;
+module.exports = function (bookshelf) {
+	model = model || bookshelf.model('Subscriber', {
 		tableName: 'subscribers',
-		hasTimestamps: ['createdAt', 'updatedAt']
+		hasTimestamps: ['createdAt', 'updatedAt'],
+		subscriptions: function subscriptions() {
+			return this.hasMany('Subscription', 'subscriberId');
+		}
 	});
+	return model;
 };

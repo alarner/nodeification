@@ -5,10 +5,26 @@ let path = require('path');
 let files = [
 	'index.js',
 	'errors.js',
-	'migrations/notifications.js',
+	'lib/addSubscriber.js',
+	'lib/getSubscriberId.js',
+	'lib/send-task.js',
+	'lib/send.js',
+	'lib/subscribe.js',
+	'lib/template-loader.js',
+	'lib/unsubscribe.js',
+	'lib/adapters/android-push.js',
+	'lib/adapters/email.js',
+	'lib/adapters/ios-push.js',
+	'lib/adapters/text.js',
+	'lib/collections/Subscribers.js',
+	'lib/collections/Subscriptions.js',
 	'lib/error-handlers/subscriber.js',
+	'lib/error-handlers/subscription.js',
+	'lib/error-handlers/unsubscription.js',
+	'lib/models/Notification.js',
 	'lib/models/Subscriber.js',
-	'lib/addSubscriber.js'
+	'lib/models/Subscription.js',
+	'lib/models/Unsubscription.js'
 ];
 
 async.each(
