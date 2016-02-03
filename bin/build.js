@@ -12,9 +12,9 @@ let files = [
 	'lib/subscribe.js',
 	'lib/template-loader.js',
 	'lib/unsubscribe.js',
-	'lib/adapters/android-push.js',
+	'lib/adapters/push-android.js',
 	'lib/adapters/email.js',
-	'lib/adapters/ios-push.js',
+	'lib/adapters/push-ios.js',
 	'lib/adapters/text.js',
 	'lib/collections/Subscribers.js',
 	'lib/collections/Subscriptions.js',
@@ -37,7 +37,8 @@ async.each(
 
 
 function convertFile(filepath, cb) {
-	babel.transformFile(path.join(__dirname, '../', filepath), function(err, result) {
+	let options = {presets: ['es2015']};
+	babel.transformFile(path.join(__dirname, '../', filepath), options, function(err, result) {
 		if(err) return cb(err);
 		fs.writeFile(path.join(__dirname, '../dist', filepath), result.code, cb);
 	});

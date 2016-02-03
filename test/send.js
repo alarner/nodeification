@@ -26,6 +26,10 @@ describe('send', function() {
 				{
 					pattern: 'notification/chat/:id',
 					handler: 'chat-notification'
+				},
+				{
+					pattern: 'message',
+					handler: 'message'
 				}
 			],
 			parsedRoutes: [],
@@ -41,6 +45,9 @@ describe('send', function() {
 							pass: 'QPXu5aj6'
 						}
 					}
+				},
+				'push-android': {
+					key: '...'
 				}
 			}
 		};
@@ -71,13 +78,26 @@ describe('send', function() {
 		});
 	});
 
-	// it('should work', function(done) {
+	// it('should work for email', function(done) {
 	// 	addSubscriber('email', 'test@test.com', null, ['recover-password/1'])
 	// 	.then(subscriber => send('recover-password/1'))
 	// 	.then(result => {
 	// 		console.log('done');
 	// 		console.log(result);
 	// 		done();
+	// 	});
+	// });
+
+	// it('should work for push-android', function(done) {
+	// 	addSubscriber('push-android', 'cUYZOIDqNRM:APA91bEgpokNIZK2hkjh4dmX7uBrgH5AUB266ZMm49KFHrbTGvY99izZ7D5ukJ9j5w-YP1_8c41moFvmk0YEViQOL211q35iEmfn6OzM-o89h3V8zsYsc0W-56DkiisUbvSQtUo1pLHU', null, ['message'])
+	// 	.then(subscriber => send('message', {message: 'You are an awesome person!'}))
+	// 	.then(result => {
+	// 		console.log('done');
+	// 		console.log(result);
+	// 		done();
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err.params());
 	// 	});
 	// });
 });

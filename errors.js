@@ -55,6 +55,10 @@ module.exports = {
 		message: 'There is no subscription with a subscriberId of {{ subscriberId }} and descriptor "{{ descriptor }}".',
 		status: 404
 	},
+	UNKNOWN_SUBSCRIPTION_TYPE: {
+		message: 'There is no subscription with a type of "{{ type }}".',
+		status: 404
+	},
 	BAD_SUBSCRIPTION_DESCRIPTOR: {
 		message: '"{{ descriptor }}" (type = {{ type }}) is not a valid subscription descriptor.',
 		status: 400
