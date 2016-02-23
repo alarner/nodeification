@@ -41,8 +41,8 @@ describe('send', function() {
 					transport: {
 						service: 'SendGrid',
 						auth: {
-							user: 'info@orionstudiomadison.com',
-							pass: 'QPXu5aj6'
+							user: '...',
+							pass: '...'
 						}
 					}
 				},
